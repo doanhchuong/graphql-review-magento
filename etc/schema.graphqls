@@ -1,0 +1,56 @@
+# Copyright © Magento, Inc. All rights reserved.
+# See COPYING.txt for license details.
+
+type Query {
+    getReviewCustomer ( productId: Int! ): ReviewData @resolver (class: "\\Evolve\\ReviewGraphql\\Model\\Resolver\\ReviewCustomer") @doc(description:"Returns information about customer")
+    getRatingOptions : [RatingOptions] @resolver (class: "\\Evolve\\ReviewGraphql\\Model\\Resolver\\RatingOptions") @doc(description:"Returns rating options")  
+}
+
+type Mutation {
+    createReviewProduct(input: createReviewProductInput!): Boolean @resolver(class: "\\Evolve\\ReviewGraphql\\Model\\Resolver\\CreateReviewProduct") @doc(description:"Create review product")
+}
+
+input createReviewProductInput {
+    productId : Int!
+    ratings : String @doc( description : "json string data ratings")
+    nickname : String!
+    title : String!
+    detail : String!
+}
+
+type ReviewData { 
+    avg_rating_percent : String
+    count : Int
+    reviews : Reviews
+}
+
+type Reviews {
+    review_id : String 
+    created_at : String 
+    status_id : String 
+    title : String
+    detail : String 
+    nickname : String 
+    customer_id : String 
+    rating_votes : [RatingVotes]
+}
+
+type RatingVotes {
+    vote_id : String 
+    option_id : String 
+    rating_id : String 
+    review_id : String 
+    percent : String 
+    value : String 
+    rating_code : String 
+}
+
+type RatingOptions {
+    rating_code : String
+    options : [RatingOption] 
+}
+
+type RatingOption {
+    rating_id : String
+    value : String
+}
